@@ -39,7 +39,9 @@ def add_status():
             print '%d. %s' % (item_position, message)
             item_position = item_position + 1
         message_selection = int(raw_input("Choose one from the above messages\n "))
-        #We have to check if the number entered by the user is valid, i.e. it is less than or equal to the length of the STATUS_MESSAGES list. len function returns the number of elements in the list.
+        '''We have to check if the number entered by the user is valid,
+        i.e. it is less than or equal to the length of the STATUS_MESSAGES list.
+        len function returns the number of elements in the list.'''
         if len(STATUS_MESSAGES) >= message_selection:
              updated_status_message = STATUS_MESSAGES[message_selection - 1]
     else:
@@ -48,8 +50,7 @@ def add_status():
     if updated_status_message:
         print 'Your updated status message is: %s' % (updated_status_message)
     else:
-         print 'You current don' \
-               '\'t have a status update'
+         print "You current don't have a status update"
     return updated_status_message
 
 
@@ -102,6 +103,25 @@ def send_message():
     text = raw_input("What do you want to say? ")
     # handle for case when image doesn't contain any secret message
     if len(text) > 0:
+        #If a spy send a message with special words such as SOS, SAVE ME etc display an appropriate message.
+        words=[]
+        words=text.split()
+        print("words in entered text")
+        for word in words:
+            print'%s'%(word)
+        i=0
+        for i in range(len(words)):
+            if words[i]=="LOL":
+                print"LOL=laughing out of lots. "
+            elif words[i]=="ASAP":
+                print"ASAP=as soon as possible"
+            elif words[i]=="CU":
+                print"cu=see you"
+            i=i+1
+        #average number of words spoken by a spy everytime
+        num_of_words=(len(words))
+        print("average number of words spoken"),
+        print('%d')%num_of_words
         #The encode function takes the secret message, the image, and the output path as input and creates the image with the hidden secret message at the output path.
         Steganography.encode(original_image, output_path, text)
 
@@ -157,6 +177,7 @@ def read_chat_history():
 #function to start chat
 def start_chat(spy):
     current_status_message =None
+    #to update the name of the spy
     spy.name = spy.salutation + " " + spy.name
     if spy.age > 12 and spy.age < 50:
         #printing a welcome message with all the details about the spy:
@@ -194,12 +215,12 @@ if existing.upper() == "Y":
     start_chat(spy)
 elif existing.upper()=="N":
     spy=Spy('','',0,0.0)
+    #ask the user for the name of the spy
     spy.name=raw_input("what is your name?")
     if len(spy.name)>0:
         print 'Welcome ' + spy.name + " .glad(*_*) to have you with us"
         spy.salutation=raw_input("what should we call you?(mr. or ms.)\n")
         if len(spy.salutation)>0:
-            spy.name=spy.salutation + " " + spy.name
             print "alright"+spy.name+".i'd like to know about more before we proceed"
             spy.age=raw_input("what is your age?\n")
             # type() method tells you the type of your information or data.
@@ -209,13 +230,15 @@ elif existing.upper()=="N":
             #condition to check age to be a spy
             if spy.age<50 and spy.age>12:
                spy.rating=raw_input("what is your spy_rating\n")
-               spy_rating=float(spy.rating)
-               if(spy.rating>4.5):
+               spy.rating=float(spy.rating)
+               if spy.rating>4.5:
                    print"you are good ace"
                elif spy.rating>3.5 and spy.rating<=4.5:
                    print"you are one of the good one"
                elif spy.rating >= 2.5 and spy.rating<= 3.5:
                    print 'You can always do better'
+               else:
+                   print"Average case"
                start_chat(spy)
             else:
                 print'Sorry you are not of the correct age to be a spy'
