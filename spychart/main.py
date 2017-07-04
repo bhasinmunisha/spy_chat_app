@@ -2,6 +2,7 @@
 from spy_detial import spy,Spy,ChatMessage,friends
 from steganography.steganography import Steganography
 from datetime import datetime
+import colors
 
 #list which has some default status
 STATUS_MESSAGES = ['Hey there! i am using spy chat(*_*)', 'Available','Busy','In college','Sleeping','At the work','DND']
@@ -62,6 +63,7 @@ def add_friend():
     new_friend.rating = raw_input("Spy rating?\n")
     #int() method, it converts strings into integers.
     new_friend.age =int(new_friend.age)
+    #float() method ,it convert strings into floats
     new_friend.rating =float(new_friend.rating)
     if len(new_friend.name) > 0 and new_friend.age > 12 and new_friend.rating >= spy.rating:
         friends.append(new_friend)
@@ -140,15 +142,18 @@ def read_chat_history():
     read_for = select_friend()
 
     print '\n'
-
     for chat in friends[read_for].chats:
         #we check if the chat was sent by the active user or some other spy. We are also using the strftime() function to format the timestamp associated with each chat message.
         if chat.sent_by_me:
-            print '[%s] %s: %s' % (chat.time.strftime("%d %B %Y"), 'You said:', chat.message)
+            #printing the chat history print it using different colors: Time in Blue, Spy Name in Red, Message in Black.
+            colors.prBlue("[%s]"%(chat.time.strftime("%d %B %Y ,%H : %m")))
+            colors.prRed("%s:"%("you said"))
+            colors.prBlack("%s"%(chat.message))
+
         else:
-            print '[%s] %s said: %s' % (chat.time.strftime("%d %B %Y"), friends[read_for].name, chat.message)
-
-
+            colors.prBlue("[%s]" % (chat.time.strftime("%d %B %Y ,%H : %m")),)
+            colors.prRed("%s said:"%(friends[read_for].name),)
+            colors.prBlack("%s" % (chat.message))
 #function to start chat
 def start_chat(spy):
     current_status_message =None
